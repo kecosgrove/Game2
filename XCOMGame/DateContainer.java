@@ -44,17 +44,19 @@ public class DateContainer {
         return new DateContainer(newYear, newDay, newHour, minute);
     }
 
+    //FIX
     public DateContainer hourAdvance(double multiplier) {
-        double newHour = hour + multiplier;
-        int newMinute = minute + (int) (60 * (newHour - Math.floor(newHour)));
-        int intHour = (int) Math.floor(newHour);
-        int overshoot = intHour - 23;
+        int newMinute = minute + (int) Math.floor(60 * (multiplier - Math.floor(multiplier)));
+        boolean overshoot = false;
         if (newMinute >= 60) {
             newMinute = newMinute - 60;
-            overshoot++;
+            overshoot = true;
         }
         DateContainer oneStep = new DateContainer(year, day, hour, newMinute);
-        for (int i = 0; i < overshoot; i++) {
+        for (int i = 0; i < Math.floor(multiplier); i++) {
+            oneStep = oneStep.hourAdvance();
+        }
+        if (overshoot) {
             oneStep = oneStep.hourAdvance();
         }
         return oneStep;
