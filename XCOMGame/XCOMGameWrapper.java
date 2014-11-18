@@ -177,7 +177,7 @@ public class XCOMGameWrapper {
             missions[i] = new MTMSlot(-1);
         }
         MapWorld world = new MapWorld(new DateContainer(2015, 60, 0, 0), missions, initContinents());
-        world.bigBang(MapWorld.screenSide, MapWorld.screenSide, .1);
+        world.bigBang(MapWorld.screenHeight, MapWorld.screenWidth, .1);
     }
 
 }
