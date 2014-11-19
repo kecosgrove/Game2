@@ -27,7 +27,7 @@ public class Mission implements MissionSlot {
         if (timeLeft > 0) {
             return new Mission(timeLeft-1, location, city);
         } else {
-            return new MTMSlot();
+            return new MTMSlot(true);
         }
     }
     
