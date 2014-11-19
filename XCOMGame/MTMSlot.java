@@ -7,9 +7,11 @@ import java.util.Random;
 public class MTMSlot implements MissionSlot {
 
     Random rng;
+    boolean panic;
 
-    public MTMSlot() {
+    public MTMSlot(boolean panic) {
         rng = new Random();
+        this.panic = panic;
     }
 
     public boolean isEmpty() {
@@ -22,6 +24,10 @@ public class MTMSlot implements MissionSlot {
 
     public MissionSlot onTick() {
         return this;
+    }
+    
+    public boolean panicEvent() {
+        return panic;
     }
 
 }
