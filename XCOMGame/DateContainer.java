@@ -1,5 +1,8 @@
 package XCOMGame;
 
+import javalib.colors.*;
+import javalib.worldimages.*;
+
 /**
  * Created by User on 11/14/2014.
  */
@@ -62,9 +65,15 @@ public class DateContainer {
         return oneStep;
     }
 
+    public WorldImage getImage() {
+        return ImageFactory.textImage(MapWorld.datePosn, this.toString(), 30, 1, new White());
+    }
+
     public String toString() {
         String month;
         String dayString;
+        String hourString = "" + hour;
+        String minuteString = "" + minute;
         if (year % 4 != 0) {
             if (day < febStart) {
                 month = "January";
@@ -163,9 +172,15 @@ public class DateContainer {
                 month = "December";
                 dayString = ("" + (day - decStart));
             }
-        }
 
-        return (month + " " + dayString + " " + year + " " + hour + ":" + minute);
+        }
+        if (hour < 10) {
+            hourString = "0"+hour;
+        }
+        if (minute < 10) {
+            minuteString = "0"+minute;
+        }
+        return (month + " " + dayString + " " + year + " " + hourString + ":" + minuteString);
     }
 
 }

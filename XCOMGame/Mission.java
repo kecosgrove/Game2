@@ -2,9 +2,7 @@ package XCOMGame;
 
 import javalib.worldimages.WorldImage;
 
-/**
- * Created by User on 11/15/2014.
- */
+//Todo: Redesign for 1 per continent
 public class Mission implements MissionSlot {
 
     int timeLeft;
@@ -29,12 +27,8 @@ public class Mission implements MissionSlot {
         if (timeLeft > 0) {
             return new Mission(timeLeft-1, location, city);
         } else {
-            return new MTMSlot(location);
+            return new MTMSlot();
         }
-    }
-
-    public int getEvent() {
-        throw new RuntimeException("No event");
     }
 
 }

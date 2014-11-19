@@ -7,6 +7,5 @@ public interface MissionSlot {
     public boolean isEmpty();
     public WorldImage getImage();
     public MissionSlot onTick();
-    public int getEvent();
 
 }

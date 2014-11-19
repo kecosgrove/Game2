@@ -162,22 +162,19 @@ public class XCOMGameWrapper {
         String[] AFCities = initAFCities();
         String[] OCCities = initOCCities();
         Continent[] array = new Continent[6];
-        array[0] = new Continent(0, "North America", NACities);
-        array[1] = new Continent(0, "South America", SACities);
-        array[2] = new Continent(0, "Europe", EUCities);
-        array[3] = new Continent(0, "Asia", ASCities);
-        array[4] = new Continent(0, "Africa", AFCities);
-        array[5] = new Continent(0, "Oceania", OCCities);
+        MissionSlot initMission = new MTMSlot();
+        array[0] = new Continent(0, "North America", NACities, MapWorld.NAPos, initMission);
+        array[1] = new Continent(0, "South America", SACities, MapWorld.SAPos, initMission);
+        array[2] = new Continent(0, "Europe", EUCities, MapWorld.EUPos, initMission);
+        array[3] = new Continent(0, "Asia", ASCities, MapWorld.ASPos, initMission);
+        array[4] = new Continent(0, "Africa", AFCities, MapWorld.AFPos, initMission);
+        array[5] = new Continent(0, "Oceania", OCCities, MapWorld.OCPos, initMission);
         return array;
     }
 
     public static void main(String[] args) {
-        MissionSlot[] missions = new MissionSlot[4];
-        for (int i = 0; i < missions.length; i++) {
-            missions[i] = new MTMSlot(-1);
-        }
-        MapWorld world = new MapWorld(new DateContainer(2015, 60, 0, 0), missions, initContinents());
-        world.bigBang(MapWorld.screenHeight, MapWorld.screenWidth, .1);
+        MapWorld world = new MapWorld(new DateContainer(2015, 60, 0, 0), initContinents());
+        world.bigBang(MapWorld.screenHeight, MapWorld.screenWidth, .2);
     }
 
 }

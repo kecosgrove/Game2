@@ -2,12 +2,14 @@ package XCOMGame;
 
 import javalib.worldimages.WorldImage;
 
+import java.util.Random;
+
 public class MTMSlot implements MissionSlot {
 
-    int panicEvent;
+    Random rng;
 
-    public MTMSlot(int panicEvent) {
-        this.panicEvent = panicEvent;
+    public MTMSlot() {
+        rng = new Random();
     }
 
     public boolean isEmpty() {
@@ -20,10 +22,6 @@ public class MTMSlot implements MissionSlot {
 
     public MissionSlot onTick() {
         return this;
-    }
-
-    public int getEvent() {
-        return panicEvent;
     }
 
 }
