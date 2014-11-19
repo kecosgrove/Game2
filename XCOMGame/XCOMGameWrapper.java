@@ -162,7 +162,7 @@ public class XCOMGameWrapper {
         String[] AFCities = initAFCities();
         String[] OCCities = initOCCities();
         Continent[] array = new Continent[6];
-        MissionSlot initMission = new MTMSlot();
+        MissionSlot initMission = new MTMSlot(false);
         array[0] = new Continent(0, "North America", NACities, MapWorld.NAPos, initMission);
         array[1] = new Continent(0, "South America", SACities, MapWorld.SAPos, initMission);
         array[2] = new Continent(0, "Europe", EUCities, MapWorld.EUPos, initMission);
