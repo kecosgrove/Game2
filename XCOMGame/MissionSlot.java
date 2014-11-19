@@ -7,5 +7,6 @@ public interface MissionSlot {
     public boolean isEmpty();
     public WorldImage getImage();
     public MissionSlot onTick();
+    public boolean panicEvent();
 
 }
