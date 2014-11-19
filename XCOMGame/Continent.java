@@ -45,7 +45,7 @@ public class Continent {
     }
 
     public Continent onTick() {
-        return this;
+        return this; //temp
     }
 
 }
