@@ -30,5 +30,9 @@ public class Mission implements MissionSlot {
             return new MTMSlot();
         }
     }
+    
+    public boolean panicEvent() {
+        throw new RunTimeException("Invalid call to panicEvent()");
+    }
 
 }
