@@ -23,7 +23,7 @@ public class MTMSlot implements MissionSlot {
     }
 
     public MissionSlot onTick() {
-        return this;
+        return new MTMSlot(false);
     }
     
     public boolean panicEvent() {
