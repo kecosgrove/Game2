@@ -8,5 +8,6 @@ public interface MissionSlot {
     public WorldImage getImage();
     public MissionSlot onTick();
     public boolean panicEvent();
+    public boolean failure();
 
 }

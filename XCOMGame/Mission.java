@@ -1,38 +1,43 @@
 package XCOMGame;
 
+import javalib.worldimages.Posn;
 import javalib.worldimages.WorldImage;
 
-//Todo: Redesign for 1 per continent
 public class Mission implements MissionSlot {
 
     int timeLeft;
-    int location;
     String city;
+    Posn mapPos;
 
-    public Mission(int timeLeft, int location, String city) {
+    public Mission(int timeLeft, String city, Posn mapPos) {
         this.timeLeft = timeLeft;
-        this.location = location;
         this.city = city;
+        this.mapPos = mapPos;
     }
 
     public boolean isEmpty() {
         return false;
     }
 
+    //Todo: Figure this out, also for FailMSlot
     public WorldImage getImage() {
         return null; //temp
     }
 
     public MissionSlot onTick() {
         if (timeLeft > 0) {
-            return new Mission(timeLeft-1, location, city);
+            return new Mission(timeLeft-1, city, mapPos);
         } else {
             return new MTMSlot(true);
         }
     }
     
     public boolean panicEvent() {
-        throw new RunTimeException("Invalid call to panicEvent()");
+        return false;
+    }
+
+    public boolean failure() {
+        return false;
     }
 
 }

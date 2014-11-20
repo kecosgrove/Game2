@@ -15,6 +15,7 @@ public class MapWorld extends World {
     protected static final int missionDuration = 10;
     protected static final int screenHeight = 1280;
     protected static final int screenWidth = 720;
+    //Todo: solve this disaster...
     protected static final WorldImage image =
             ImageFactory.fromFileImage(new Posn(960, 540),
                     "C:\\Users\\User\\Documents\\CS-203\\game2\\src\\XCOMGame\\images\\map.png");
@@ -37,10 +38,16 @@ public class MapWorld extends World {
         this.continents = continents;
     }
 
+    //Todo: Make the GameOverWorld world
     public World onTick() {
         Continent[] newContinents = continents;
+        boolean failure = true;
         for (int i = 0; i < continents.length; i++) {
             newContinents[i] = newContinents[i].onTick();
+            failure = newContinents[i].failure() && failure;
+        }
+        if (failure) {
+            //return new GameOverWorld();
         }
         return new MapWorld(date.hourAdvance(timeRoC), newContinents);
     }

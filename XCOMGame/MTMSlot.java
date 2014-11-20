@@ -6,11 +6,9 @@ import java.util.Random;
 
 public class MTMSlot implements MissionSlot {
 
-    Random rng;
     boolean panic;
 
     public MTMSlot(boolean panic) {
-        rng = new Random();
         this.panic = panic;
     }
 
@@ -19,15 +17,20 @@ public class MTMSlot implements MissionSlot {
     }
 
     public WorldImage getImage() {
-        throw new RuntimeException("No available WorldImage");
+        throw new RuntimeException("No Image");
     }
 
     public MissionSlot onTick() {
-        return new MTMSlot(false);
+        if (panic) return new MTMSlot(false);
+        else return this;
     }
     
     public boolean panicEvent() {
         return panic;
+    }
+
+    public boolean failure() {
+        return false;
     }
 
 }
