@@ -16,17 +16,27 @@ public class MTMSlot implements MissionSlot {
         return true;
     }
 
+    public boolean hasImage() {
+        return false;
+    }
+
     public WorldImage getImage() {
         throw new RuntimeException("No Image");
     }
 
     public MissionSlot onTick() {
-        if (panic) return new MTMSlot(false);
-        else return this;
+        if (panic) {
+            return new MTMSlot(false);
+        }
+        return this;
     }
     
-    public boolean panicEvent() {
+    public boolean hasEvent() {
         return panic;
+    }
+
+    public GameEvent getEvent() {
+        return new GameEvent(MapWorld.panicEID, MapWorld.panicRate);
     }
 
     public boolean failure() {

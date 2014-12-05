@@ -66,4 +66,12 @@ public class ImageFactory {
         return new OverlayImages(bot, top);
     }
 
+    public static WorldImage diskImage(Posn pinhole, int radius, Color color) {
+        return new DiskImage(pinhole, radius, color);
+    }
+
+    public static WorldImage diskImage(Posn pinhole, int radius, IColor color) {
+        return new DiskImage(pinhole, radius, color);
+    }
+
 }
