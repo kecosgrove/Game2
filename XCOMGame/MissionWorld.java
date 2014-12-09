@@ -16,13 +16,27 @@ public class MissionWorld extends World {
 
     public static final int yourMove = 0;
     public static final int yourAttack = 1;
-    public static final int enemyMove = 2;
-    public static final int enemyAttack = 3;
+    public static final int enemyTurn = 2;
 
     Board board;
     int state;
     MapWorld map;
     Enemy enemy;
+
+    //constructor 1: initial constructor
+    public MissionWorld(MapWorld map, int teamOne, int teamTwo) {
+        board = BoardFactory.makeBoard(teamOne, teamTwo);
+        state = yourMove;
+        this.map = map;
+    }
+
+    //constructor 2: onTick constructor
+    public MissionWorld(MapWorld map, Board board, int state, Enemy enemy) {
+        this.map = map;
+        this.board = board;
+        this.state = state;
+        this.enemy = enemy;
+    }
 
     public static Posn arrayToPixelPos(Posn arrayPos) {
         return new Posn((arrayPos.x*40) + 40, (arrayPos.y*-40) + 720 - 40);
@@ -34,46 +48,29 @@ public class MissionWorld extends World {
         return new Posn(x.intValue(), y.intValue());
     }
 
-    //constructor 1: initial constructor
-    public MissionWorld(MapWorld map, int teamOne, int teamTwo) {
-        board = BoardFactory.makeBoard(teamOne, teamTwo);
-        state = yourMove;
-        this.map = map;
-        enemy = new Enemy();
-    }
-
-    //constructor 2: onTick constructor
-    public MissionWorld(MapWorld map, Board board, int state, Enemy enemy) {
-        this.map = map;
-        this.board = board;
-        this.state = state;
-        this.enemy = enemy;
-    }
-
     public WorldImage makeImage() {
         if (state == yourAttack) {
             WorldImage chance = ImageFactory.textImage(chancePos, board.chanceToHit() + "%", 30, 0, new Color(0,0,0));
             return ImageFactory.overlayImages(board.getImage(), chance);
-        } else if (state == enemyMove || state == enemyAttack) {
+        } else if (state == enemyTurn) {
             WorldImage chance = ImageFactory.textImage(chancePos, "Enemy Turn", 30, 0, new Color(0,0,0));
             return ImageFactory.overlayImages(board.getImage(), chance);
         }
         return board.getImage();
     }
 
-    //Todo: implement forceEnd()
     public World onTick() {
         if (board.forceEnd()) {
             return this.changeTurn();
         }
-        if (state == enemyMove || state == enemyAttack) {
-            //enemy plays
+        if (state == enemyTurn) {
+            return enemy.makeMove();
         }
         return this;
     }
 
     public World onKeyEvent(String s) {
-        if (state == yourMove || state == enemyMove) {
+        if (state == yourMove) {
             if (s.compareTo("z") == 0) {
                 return new MissionWorld(map, board, yourAttack, enemy);
             }
@@ -85,7 +82,7 @@ public class MissionWorld extends World {
             } else if (s.compareTo("right") == 0) {
                 return new MissionWorld(map, board.rotateRight(), state, enemy);
             }
-        } else if (state == yourAttack || state == enemyAttack) {
+        } else if (state == yourAttack) {
             if (s.compareTo("z") == 0) {
                 return new MissionWorld(map, board, yourMove, enemy);
             }
@@ -105,7 +102,7 @@ public class MissionWorld extends World {
     }
 
     public World onMouseClicked(Posn mouse) {
-        if (state == yourMove || state == enemyMove) {
+        if (state == yourMove) {
             Posn arrayPos = pixeltoArrayPos(mouse);
             if (board.inBoard(arrayPos)) {
                 return new MissionWorld(map, board.move(arrayPos), state, enemy);
@@ -115,9 +112,9 @@ public class MissionWorld extends World {
 
     public World changeTurn() {
         int newTurn;
-        if (state == yourAttack || state == yourMove) newTurn = enemyMove;
+        if (state == yourAttack || state == yourMove) newTurn = enemyTurn;
         else newTurn = yourMove;
-        return new MissionWorld(map, board.end(), newTurn, enemy);
+        return new MissionWorld(map, board.end(), newTurn, new Enemy(this));
     }
 
     public World completeMission() {

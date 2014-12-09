@@ -7,8 +7,26 @@ import javalib.worldimages.WorldImage;
  */
 public class Enemy {
 
-    public static Board makeMove(Board board) {
-        return board; //temp
+    boolean[] moved;
+    boolean[] shot;
+    MissionWorld world;
+
+    public Enemy(MissionWorld world) {
+        this.world = world;
+        moved = new boolean[world.board.teamTwo.length];
+        shot = new boolean[world.board.teamTwo.length];
+        for (int i = 0; i < moved.length; i++) {
+            moved[i] = false;
+        }
+        for (int i = 0; i < shot.length; i++) {
+            shot[i] = false;
+        }
+    }
+
+    //Todo: Finish this. (Last thing?)
+    public MissionWorld makeMove() {
+        if (world.state != MissionWorld.enemyTurn) throw new RuntimeException("Enemy cannot make move!");
+        return world; //temp
     }
 
 }
