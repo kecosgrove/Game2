@@ -183,7 +183,7 @@ public class XCOMGameWrapper {
         World world = new MapWorld(MapWorld.start, initContinents());
         //World world = new TestingWorld(initContinents(), 5, 19);
         //World world = new GameOverWorld();
-        world.bigBang(MapWorld.screenHeight, MapWorld.screenWidth, .2);
+        world.bigBang(MapWorld.screenWidth, MapWorld.screenHeight, .2);
     }
 
 }

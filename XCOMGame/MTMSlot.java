@@ -1,5 +1,6 @@
 package XCOMGame;
 
+import javalib.worldimages.Posn;
 import javalib.worldimages.WorldImage;
 
 import java.util.Random;
@@ -41,6 +42,10 @@ public class MTMSlot implements MissionSlot {
 
     public boolean failure() {
         return false;
+    }
+
+    public GameEvent onMouseClicked(Posn mouse) {
+        return new GameEvent(-1);
     }
 
 }

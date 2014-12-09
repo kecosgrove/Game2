@@ -4,25 +4,129 @@ import javalib.funworld.World;
 import javalib.worldimages.Posn;
 import javalib.worldimages.WorldImage;
 
+import java.awt.*;
+
 public class MissionWorld extends World {
 
-    Posn[] enemies;
-    Posn[] units;
-    PlayingSquare[][] board;
-    Posn selection;
-    Posn target;
-    boolean turn;
-    World map;
+    public static final int unitHealth = 5;
+    public static final int pause = 5;
+    public static final int shortPause = 3;
+    public static final int movesPerTurn = 6;
+    public static final Posn chancePos = new Posn(1150, 700);
 
-    public MissionWorld() {
+    public static final int yourMove = 0;
+    public static final int yourAttack = 1;
+    public static final int enemyMove = 2;
+    public static final int enemyAttack = 3;
+
+    Board board;
+    int state;
+    MapWorld map;
+    Enemy enemy;
+
+    public static Posn arrayToPixelPos(Posn arrayPos) {
+        return new Posn((arrayPos.x*40) + 40, (arrayPos.y*-40) + 720 - 40);
+    }
+
+    public static Posn pixeltoArrayPos(Posn pPos) {
+        Double x = Math.floor(Math.abs(pPos.x - 20)/40.0);
+        Double y = Math.floor(Math.abs(pPos.y - 20) / -40.0) + 17;
+        return new Posn(x.intValue(), y.intValue());
+    }
+
+    //constructor 1: initial constructor
+    public MissionWorld(MapWorld map, int teamOne, int teamTwo) {
+        board = BoardFactory.makeBoard(teamOne, teamTwo);
+        state = yourMove;
+        this.map = map;
+        enemy = new Enemy();
+    }
+
+    //constructor 2: onTick constructor
+    public MissionWorld(MapWorld map, Board board, int state, Enemy enemy) {
+        this.map = map;
+        this.board = board;
+        this.state = state;
+        this.enemy = enemy;
     }
 
     public WorldImage makeImage() {
-        return null; //temp
+        if (state == yourAttack) {
+            WorldImage chance = ImageFactory.textImage(chancePos, board.chanceToHit() + "%", 30, 0, new Color(0,0,0));
+            return ImageFactory.overlayImages(board.getImage(), chance);
+        } else if (state == enemyMove || state == enemyAttack) {
+            WorldImage chance = ImageFactory.textImage(chancePos, "Enemy Turn", 30, 0, new Color(0,0,0));
+            return ImageFactory.overlayImages(board.getImage(), chance);
+        }
+        return board.getImage();
     }
 
+    //Todo: implement forceEnd()
     public World onTick() {
-        return this; //temp
+        if (board.forceEnd()) {
+            return this.changeTurn();
+        }
+        if (state == enemyMove || state == enemyAttack) {
+            //enemy plays
+        }
+        return this;
+    }
+
+    public World onKeyEvent(String s) {
+        if (state == yourMove || state == enemyMove) {
+            if (s.compareTo("z") == 0) {
+                return new MissionWorld(map, board, yourAttack, enemy);
+            }
+            if (s.compareTo("e") == 0) {
+                return this.changeTurn();
+            }
+            if (s.compareTo("left") == 0) {
+                return new MissionWorld(map, board.rotateLeft(), state, enemy);
+            } else if (s.compareTo("right") == 0) {
+                return new MissionWorld(map, board.rotateRight(), state, enemy);
+            }
+        } else if (state == yourAttack || state == enemyAttack) {
+            if (s.compareTo("z") == 0) {
+                return new MissionWorld(map, board, yourMove, enemy);
+            }
+            if (s.compareTo("e") == 0) {
+                return this.changeTurn();
+            }
+            if (s.compareTo("x") == 0) {
+                return board.attack(this);
+            }
+            if (s.compareTo("left") == 0) {
+                return new MissionWorld(map, board.aimLeft(), state, enemy);
+            } else if (s.compareTo("right") == 0) {
+                return new MissionWorld(map, board.aimRight(), state, enemy);
+            }
+        }
+        return this;
+    }
+
+    public World onMouseClicked(Posn mouse) {
+        if (state == yourMove || state == enemyMove) {
+            Posn arrayPos = pixeltoArrayPos(mouse);
+            if (board.inBoard(arrayPos)) {
+                return new MissionWorld(map, board.move(arrayPos), state, enemy);
+            } else return this;
+        } else return this;
+    }
+
+    public World changeTurn() {
+        int newTurn;
+        if (state == yourAttack || state == yourMove) newTurn = enemyMove;
+        else newTurn = yourMove;
+        return new MissionWorld(map, board.end(), newTurn, enemy);
+    }
+
+    public World completeMission() {
+        World newMap = new MapWorld(map.date, map.continents, board.teamOneAlive(), board.teamOneDmg());
+        return new TransitionWorld("Mission Complete", MapWorld.transitionLength, newMap);
+    }
+
+    public World failMission() {
+        return new GameOverWorld(map.date, map.start);
     }
 
 }

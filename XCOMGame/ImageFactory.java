@@ -74,4 +74,12 @@ public class ImageFactory {
         return new DiskImage(pinhole, radius, color);
     }
 
+    public static WorldImage circleImage(Posn pinhole, int radius, Color color) {
+        return new CircleImage(pinhole, radius, color);
+    }
+
+    public static WorldImage circleImage(Posn pinhole, int radius, IColor color) {
+        return new CircleImage(pinhole, radius, color);
+    }
+
 }

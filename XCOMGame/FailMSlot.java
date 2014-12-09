@@ -45,4 +45,8 @@ public class FailMSlot implements MissionSlot {
         return false;
     }
 
+    public GameEvent onMouseClicked(Posn mouse) {
+        return new GameEvent(-1);
+    }
+
 }

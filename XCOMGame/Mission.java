@@ -7,6 +7,8 @@ import java.awt.*;
 
 public class Mission implements MissionSlot {
 
+    static final int diskRadius = 20;
+
     int timeLeft;
     City city;
     Posn textPos;
@@ -29,7 +31,7 @@ public class Mission implements MissionSlot {
 
     //Todo: Add text, play with image positions and sizes
     public WorldImage getImage() {
-        WorldImage dot = ImageFactory.diskImage(city.posn, 20, new Color(255, 0, 0));
+        WorldImage dot = ImageFactory.diskImage(city.posn, diskRadius, new Color(255, 0, 0));
         WorldImage text = ImageFactory.textImage(textPos, ("Alien Attack in " + city.name), 20, 1, new Color(255, 0, 0));
         return ImageFactory.overlayImages(dot, text);
     }
@@ -52,6 +54,16 @@ public class Mission implements MissionSlot {
 
     public boolean failure() {
         return false;
+    }
+
+    public GameEvent onMouseClicked(Posn mouse) {
+        boolean inDisk = Math.sqrt(((city.posn.x-mouse.x)*(city.posn.x-mouse.x)) +
+                                   ((city.posn.y-mouse.y)*(city.posn.y-mouse.y)))
+                                  <= diskRadius + 4.0;
+        if (inDisk) {
+            return new GameEvent(MapWorld.startMID, city.name);
+        }
+        return new GameEvent(-1); //temp
     }
 
 }

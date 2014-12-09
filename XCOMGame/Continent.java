@@ -68,12 +68,18 @@ public class Continent {
         return new Continent(panic, name, cities, mapPos, textPos, mission);
     }
 
+    //determines game over
     public boolean failure() {
         return mission.failure();
     }
 
-    public MissionSlot getMission() {
-        return mission;
+    public GameEvent onMouseClicked(Posn mouse) {
+        return mission.onMouseClicked(mouse);
+    }
+
+    public Continent missionHandled() {
+        if (panic > 0) return new Continent(panic - MapWorld.panicRate, name, cities, mapPos, textPos, new MTMSlot(false));
+        else return new Continent(panic, name, cities, mapPos, textPos, new MTMSlot(false));
     }
 
     private static int toNN(int num) {

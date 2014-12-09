@@ -1,5 +1,6 @@
 package XCOMGame;
 
+import javalib.worldimages.Posn;
 import javalib.worldimages.WorldImage;
 
 public interface MissionSlot {
@@ -12,5 +13,6 @@ public interface MissionSlot {
     public boolean failure();
     public boolean hasEvent();
     public GameEvent getEvent();
+    public GameEvent onMouseClicked(Posn mouse);
 
 }
