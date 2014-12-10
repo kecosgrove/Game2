@@ -32,7 +32,7 @@ public class Testing {
     //Ensures that a continent will eventually generate a mission
     public static void missionGenerationTester(int repeat) {
         for (int i = 0; i < repeat; i++) {
-            Continent continent = new Continent(0, "", XCOMGameWrapper.initAFCities(), MapWorld.AFPos, MapWorld.AFPos,
+            Continent continent = new Continent(0, XCOMGameWrapper.initAFCities(), MapWorld.AFPos, MapWorld.AFPos,
                                                 new MTMSlot(false));
             while(!continent.mission.hasImage()) {
                 continent = continent.onTick();
@@ -44,7 +44,7 @@ public class Testing {
     //Ensures that a continent successfully reduces its panic when told to do so
     public static void missionHandledTester(int repeat) {
         for (int i = 0; i < repeat; i++) {
-            Continent continent = new Continent(MapWorld.panicRate, "", XCOMGameWrapper.initAFCities(), MapWorld.AFPos,
+            Continent continent = new Continent(MapWorld.panicRate, XCOMGameWrapper.initAFCities(), MapWorld.AFPos,
                     MapWorld.AFPos, new MTMSlot(false));
             if (continent.missionHandled().panic != 0) throw new RuntimeException();
         }
@@ -54,7 +54,7 @@ public class Testing {
     //Ensures that a continent successfully increase panic when told to do so
     public static void processPanicTester(int repeat) {
         for (int i = 0; i < repeat; i++) {
-            Continent continent = new Continent(0, "", XCOMGameWrapper.initAFCities(), MapWorld.AFPos,
+            Continent continent = new Continent(0, XCOMGameWrapper.initAFCities(), MapWorld.AFPos,
                     MapWorld.AFPos, new Mission(0, new City(new Posn(0,0), ""), new Posn(0,0), false));
             if (!(continent.onTick().panic > 0)) {
                 throw new RuntimeException();

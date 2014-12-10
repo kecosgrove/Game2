@@ -12,16 +12,14 @@ import java.util.Random;
 public class Continent {
 
     int panic;
-    String name;
     City[] cities;
     Posn mapPos;
     Posn textPos;
     MissionSlot mission;
     Random rng;
 
-    public Continent(int panic, String name, City[] cities, Posn mapPos, Posn textPos, MissionSlot mission) {
+    public Continent(int panic, City[] cities, Posn mapPos, Posn textPos, MissionSlot mission) {
         this.panic = panic;
-        this.name = name;
         this.cities = cities;
         this.mapPos = mapPos;
         this.textPos = textPos;
@@ -33,9 +31,6 @@ public class Continent {
         return panic;
     }
 
-    public String name() {
-        return name;
-    }
 
     private City randCity() {
         return cities[rng.nextInt(cities.length)];
@@ -56,16 +51,16 @@ public class Continent {
         MissionSlot mission = this.mission.onTick();
         if (mission.hasEvent() && mission.getEvent().ID == MapWorld.panicEID) panic = panic + mission.getEvent().value;
         if (panic > 9)
-            return new Continent(panic, name, cities, mapPos, textPos,
+            return new Continent(panic, cities, mapPos, textPos,
                                  new FailMSlot(new Posn(mapPos.x, mapPos.y - 50)));
         if (mission.isEmpty()) {
             boolean makeMission = (rng.nextInt() % MapWorld.missionRate) == 0;
             if (makeMission) {
-                return new Continent(panic, name, cities, mapPos, textPos,
+                return new Continent(panic, cities, mapPos, textPos,
                                      new Mission(MapWorld.missionDuration, randCity(), textPos, true));
             }
         }
-        return new Continent(panic, name, cities, mapPos, textPos, mission);
+        return new Continent(panic, cities, mapPos, textPos, mission);
     }
 
     //determines game over
@@ -78,8 +73,8 @@ public class Continent {
     }
 
     public Continent missionHandled() {
-        if (panic > 0) return new Continent(panic - MapWorld.panicRate, name, cities, mapPos, textPos, new MTMSlot(false));
-        else return new Continent(panic, name, cities, mapPos, textPos, new MTMSlot(false));
+        if (panic > 0) return new Continent(panic - MapWorld.panicRate, cities, mapPos, textPos, new MTMSlot(false));
+        else return new Continent(panic, cities, mapPos, textPos, new MTMSlot(false));
     }
 
     private static int toNN(int num) {

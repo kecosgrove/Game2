@@ -164,17 +164,17 @@ public class XCOMGameWrapper {
         City[] OCCities = initOCCities();
         Continent[] array = new Continent[6];
         MissionSlot initMission = new MTMSlot(false);
-        array[0] = new Continent(0, "North America", NACities, MapWorld.NAPos,
+        array[0] = new Continent(0, NACities, MapWorld.NAPos,
                                  new Posn(MapWorld.NAPos.x-40, MapWorld.NAPos.y-270), initMission);
-        array[1] = new Continent(0, "South America", SACities, MapWorld.SAPos,
+        array[1] = new Continent(0, SACities, MapWorld.SAPos,
                                  new Posn(MapWorld.SAPos.x-235, MapWorld.SAPos.y-30), initMission);
-        array[4] = new Continent(0, "Europe", EUCities, MapWorld.EUPos,
+        array[4] = new Continent(0, EUCities, MapWorld.EUPos,
                                  new Posn(MapWorld.EUPos.x, MapWorld.EUPos.y-220), initMission);
-        array[3] = new Continent(0, "Asia", ASCities, MapWorld.ASPos,
+        array[3] = new Continent(0, ASCities, MapWorld.ASPos,
                                  new Posn(MapWorld.ASPos.x+130, MapWorld.ASPos.y-290), initMission);
-        array[2] = new Continent(0, "Africa", AFCities, MapWorld.AFPos,
+        array[2] = new Continent(0, AFCities, MapWorld.AFPos,
                                  new Posn(MapWorld.AFPos.x, MapWorld.AFPos.y+110), initMission);
-        array[5] = new Continent(0, "Oceania", OCCities, MapWorld.OCPos,
+        array[5] = new Continent(0, OCCities, MapWorld.OCPos,
                                  new Posn(MapWorld.OCPos.x-65, MapWorld.OCPos.y+100), initMission);
         return array;
     }
