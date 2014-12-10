@@ -5,7 +5,7 @@ import javalib.worldimages.Posn;
 
 public class XCOMGameWrapper {
 
-    private static City[] initNACities() {
+    public static City[] initNACities() {
         City[] array = new City[20];
         array[0] = new City(new Posn(195, 210), "Vancouver, Canada");
         array[1] = new City(new Posn(250, 180), "Edmonton, Canada");
@@ -30,7 +30,7 @@ public class XCOMGameWrapper {
         return array;
     }
 
-    private static City[] initSACities() {
+    public static City[] initSACities() {
         City[] array = new City[20];
         array[0] = new City(new Posn(355, 377), "Panama, Panama");
         array[1] = new City(new Posn(399, 375), "Caracas, Venezuela");
@@ -55,7 +55,7 @@ public class XCOMGameWrapper {
         return array;
     }
 
-    private static City[] initEUCities() {
+    public static City[] initEUCities() {
         City[] array = new City[20];
         array[0] = new City(new Posn(617, 188), "Dublin, Ireland");
         array[1] = new City(new Posn(680, 177), "Copenhagen, Denmark");
@@ -80,7 +80,7 @@ public class XCOMGameWrapper {
         return array;
     }
 
-    private static City[] initASCities() {
+    public static City[] initASCities() {
         City[] array = new City[20];
         array[0] = new City(new Posn(771, 177), "Moscow, Russia");
         array[1] = new City(new Posn(814, 176), "Kazan, Russia");
@@ -105,7 +105,7 @@ public class XCOMGameWrapper {
         return array;
     }
 
-    private static City[] initAFCities() {
+    public static City[] initAFCities() {
         City[] array = new City[20];
         array[0] = new City(new Posn(613, 270), "Rabat, Morocco");
         array[1] = new City(new Posn(647, 258), "Algiers, Algeria");
@@ -130,7 +130,7 @@ public class XCOMGameWrapper {
         return array;
     }
 
-    private static City[] initOCCities() {
+    public static City[] initOCCities() {
         City[] array = new City[20];
         array[0] = new City(new Posn(1263, 572), "Auckland, New Zealand");
         array[1] = new City(new Posn(1264, 592), "Wellington, New Zealand");

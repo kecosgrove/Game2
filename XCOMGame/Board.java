@@ -178,7 +178,6 @@ public class Board {
             if (board[teamOne[selected].x][teamOne[selected].y].canAttack()) {
                 Random rng = new Random();
                 WorldImage result = ImageFactory.rectangleImage(new Posn(640, 355), 100, 40, new Color(255, 255, 255));
-                //Posn resultPos = new Posn(teamTwo[target].x -25, teamTwo[target].y);
                 Posn resultPos = new Posn(640, 360);
                 board[teamOne[selected].x][teamOne[selected].y] = board[teamOne[selected].x][teamOne[selected].y].attack();
                 if (rng.nextInt(100) < chanceToHit()) {

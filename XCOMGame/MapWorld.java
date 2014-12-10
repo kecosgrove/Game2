@@ -8,9 +8,8 @@ import java.util.Random;
 
 public class MapWorld extends World {
 
-    private static final int numContinents = 6;
-    private static final Double timeRoC = 3.0;
-
+    public static final int numContinents = 6;
+    public static final Double timeRoC = 3.0;
     public static final int transitionLength = 15;
     public static final int missionRate = 60;
     public static final int missionDuration = 20;

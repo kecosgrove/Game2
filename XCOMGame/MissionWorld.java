@@ -13,7 +13,6 @@ public class MissionWorld extends World {
     public static final int shortPause = 3;
     public static final int movesPerTurn = 6;
     public static final Posn chancePos = new Posn(1150, 700);
-
     public static final int yourMove = 0;
     public static final int yourAttack = 1;
     public static final int enemyTurn = 2;
@@ -112,7 +111,7 @@ public class MissionWorld extends World {
         } else return this;
     }
 
-    public World changeTurn() {
+    public MissionWorld changeTurn() {
         int newTurn;
         if (state == yourAttack || state == yourMove) newTurn = enemyTurn;
         else newTurn = yourMove;
