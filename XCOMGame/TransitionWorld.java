@@ -26,7 +26,7 @@ public class TransitionWorld extends World {
 
     public World onTick() {
         if (duration > 0) return new TransitionWorld(message, duration - 1, next);
-        else return next;
+        else return next.onTick();
     }
 
     public World onMouseClicked(Posn mouse) {

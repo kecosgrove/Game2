@@ -25,20 +25,16 @@ public class AttackWorld extends World {
     public World onTick() {
         if (world.state < 2) {
             try {
-                if (duration == 0) return new MissionWorld(world.map, world.board.updateDeath(), MissionWorld.yourMove,
-                        world.enemy);
+                if (duration == 0) return new MissionWorld(world.map, world.board.updateDeath(), MissionWorld.yourMove);
             } catch (BoardClearException e) {
-                return new MissionWorld(world.map, world.board, MissionWorld.yourMove,
-                        world.enemy).completeMission();
+                return new MissionWorld(world.map, world.board, MissionWorld.yourMove).completeMission();
             }
             return new AttackWorld(world, duration - 1, image);
         } else {
             try {
-                if (duration == 0) return new MissionWorld(world.map, world.board.updateDeath(), MissionWorld.enemyMove,
-                        world.enemy);
+                if (duration == 0) return new MissionWorld(world.map, world.board.updateDeath(), MissionWorld.enemyTurn);
             } catch (BoardClearException e) {
-                return new MissionWorld(world.map, world.board, MissionWorld.enemyMove,
-                        world.enemy).failMission();
+                return new MissionWorld(world.map, world.board, MissionWorld.enemyTurn).failMission();
             }
             return new AttackWorld(world, duration - 1, image);
         }

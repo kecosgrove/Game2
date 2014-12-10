@@ -54,10 +54,19 @@ public class Board {
         for (int i = 0; i < cover.length; i++) {
             image = ImageFactory.overlayImages(image, board[cover[i].x][cover[i].y].getImage());
         }
-        for (int i = 0; i < reachable.length; i++) {
-            if (reachable[i].x != teamOne[selected].x || reachable[i].y != teamOne[selected].y) {
-                WorldImage dots = ImageFactory.diskImage(MissionWorld.arrayToPixelPos(reachable[i]), 4, new Color(0, 0, 0));
-                image = ImageFactory.overlayImages(image, dots);
+        if (turn == 0) {
+            for (int i = 0; i < reachable.length; i++) {
+                if (reachable[i].x != teamOne[selected].x || reachable[i].y != teamOne[selected].y) {
+                    WorldImage dots = ImageFactory.diskImage(MissionWorld.arrayToPixelPos(reachable[i]), 4, new Color(0, 0, 0));
+                    image = ImageFactory.overlayImages(image, dots);
+                }
+            }
+        } else {
+            for (int i = 0; i < reachable.length; i++) {
+                if (reachable[i].x != teamTwo[selected].x || reachable[i].y != teamTwo[selected].y) {
+                    WorldImage dots = ImageFactory.diskImage(MissionWorld.arrayToPixelPos(reachable[i]), 4, new Color(0, 0, 0));
+                    image = ImageFactory.overlayImages(image, dots);
+                }
             }
         }
         if (turn == 0) {
@@ -135,34 +144,33 @@ public class Board {
 
     public double chanceToHit() {
         if (turn == 0) {
-            boolean cover = false;
-            Posn attacker = teamOne[selected];
-            Posn attacked = teamTwo[target];
-            if (attacker.x < attacked.x && board[attacked.x - 1][attacked.y].collides()) cover = true;
-            else if (attacker.x > attacked.x && board[attacked.x + 1][attacked.y].collides()) cover = true;
-            else if (attacker.y < attacked.y && board[attacked.x][attacked.y - 1].collides()) cover = true;
-            else if (attacker.y > attacked.y && board[attacked.x][attacked.y + 1].collides()) cover = true;
-            double chance = Math.floor(Math.sqrt((attacker.x - attacked.x) * (attacker.x - attacked.x) +
-                    (attacker.y - attacked.y) * (attacker.y - attacked.y)));
-            chance = (chance * -1) + 100;
-            if (chance < 0) chance = 0;
-            if (cover) chance = chance / 2;
-            return chance;
+            return genChanceToHit(teamOne[selected], teamTwo[target], board);
         } else {
-            boolean cover = false;
-            Posn attacker = teamTwo[selected];
-            Posn attacked = teamOne[target];
-            if (attacker.x < attacked.x && board[attacked.x-1][attacked.y].collides()) cover = true;
-            else if (attacker.x > attacked.x && board[attacked.x+1][attacked.y].collides()) cover = true;
-            else if (attacker.y < attacked.y && board[attacked.x][attacked.y-1].collides()) cover = true;
-            else if (attacker.y > attacked.y && board[attacked.x][attacked.y+1].collides()) cover = true;
-            double chance = Math.floor(Math.sqrt((attacker.x-attacked.x)*(attacker.x-attacked.x) +
-                    (attacker.y-attacked.y)*(attacker.y-attacked.y)));
-            chance = (chance*-1)+100;
-            if (chance < 0) chance = 0;
-            if (cover) chance = chance/2;
-            return chance;
+            return genChanceToHit(teamTwo[selected], teamOne[target], board);
         }
+    }
+
+    public static double genChanceToHit(Posn attacker, Posn attacked, PlayingSquare[][] board) {
+        double max = Math.sqrt(31*31 + 17*17);
+        double chance = Math.sqrt((attacker.x - attacked.x) * (attacker.x - attacked.x) +
+                (attacker.y - attacked.y) * (attacker.y - attacked.y));
+        chance = Math.floor(-100*((chance-max)/max));
+        if (chance < 0) chance = 0;
+        if (hasCover(attacker, attacked, board)) chance = chance / 2;
+        return chance;
+    }
+
+    public static boolean hasCover(Posn attacker, Posn attacked, PlayingSquare[][] board) {
+        boolean cover = false;
+        if (attacker.x < attacked.x && board[attacked.x - 1][attacked.y].collides() &&
+                !board[attacked.x - 1][attacked.y].unit()) cover = true;
+        else if (attacker.x > attacked.x && board[attacked.x + 1][attacked.y].collides() &&
+                !board[attacked.x + 1][attacked.y].unit()) cover = true;
+        else if (attacker.y < attacked.y && board[attacked.x][attacked.y - 1].collides() &&
+                !board[attacked.x][attacked.y - 1].unit()) cover = true;
+        else if (attacker.y > attacked.y && board[attacked.x][attacked.y + 1].collides() &&
+                !board[attacked.x][attacked.y + 1].unit()) cover = true;
+        return cover;
     }
 
     public World attack(MissionWorld parent) {

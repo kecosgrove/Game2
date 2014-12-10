@@ -18,10 +18,11 @@ public class MissionWorld extends World {
     public static final int yourAttack = 1;
     public static final int enemyTurn = 2;
 
+    public static boolean go = false;
+
     Board board;
     int state;
     MapWorld map;
-    Enemy enemy;
 
     //constructor 1: initial constructor
     public MissionWorld(MapWorld map, int teamOne, int teamTwo) {
@@ -31,11 +32,10 @@ public class MissionWorld extends World {
     }
 
     //constructor 2: onTick constructor
-    public MissionWorld(MapWorld map, Board board, int state, Enemy enemy) {
+    public MissionWorld(MapWorld map, Board board, int state) {
         this.map = map;
         this.board = board;
         this.state = state;
-        this.enemy = enemy;
     }
 
     public static Posn arrayToPixelPos(Posn arrayPos) {
@@ -50,7 +50,7 @@ public class MissionWorld extends World {
 
     public WorldImage makeImage() {
         if (state == yourAttack) {
-            WorldImage chance = ImageFactory.textImage(chancePos, board.chanceToHit() + "%", 30, 0, new Color(0,0,0));
+            WorldImage chance = ImageFactory.textImage(chancePos, board.chanceToHit() + "%", 30, 0, new Color(0,0,255));
             return ImageFactory.overlayImages(board.getImage(), chance);
         } else if (state == enemyTurn) {
             WorldImage chance = ImageFactory.textImage(chancePos, "Enemy Turn", 30, 0, new Color(0,0,0));
@@ -63,8 +63,10 @@ public class MissionWorld extends World {
         if (board.forceEnd()) {
             return this.changeTurn();
         }
-        if (state == enemyTurn) {
-            return enemy.makeMove();
+        if (state == enemyTurn && go) {
+            return Enemy.makeMove(this);
+        } else if (state == enemyTurn) {
+            go = !go;
         }
         return this;
     }
@@ -72,19 +74,19 @@ public class MissionWorld extends World {
     public World onKeyEvent(String s) {
         if (state == yourMove) {
             if (s.compareTo("z") == 0) {
-                return new MissionWorld(map, board, yourAttack, enemy);
+                return new MissionWorld(map, board, yourAttack);
             }
             if (s.compareTo("e") == 0) {
                 return this.changeTurn();
             }
             if (s.compareTo("left") == 0) {
-                return new MissionWorld(map, board.rotateLeft(), state, enemy);
+                return new MissionWorld(map, board.rotateLeft(), state);
             } else if (s.compareTo("right") == 0) {
-                return new MissionWorld(map, board.rotateRight(), state, enemy);
+                return new MissionWorld(map, board.rotateRight(), state);
             }
         } else if (state == yourAttack) {
             if (s.compareTo("z") == 0) {
-                return new MissionWorld(map, board, yourMove, enemy);
+                return new MissionWorld(map, board, yourMove);
             }
             if (s.compareTo("e") == 0) {
                 return this.changeTurn();
@@ -93,9 +95,9 @@ public class MissionWorld extends World {
                 return board.attack(this);
             }
             if (s.compareTo("left") == 0) {
-                return new MissionWorld(map, board.aimLeft(), state, enemy);
+                return new MissionWorld(map, board.aimLeft(), state);
             } else if (s.compareTo("right") == 0) {
-                return new MissionWorld(map, board.aimRight(), state, enemy);
+                return new MissionWorld(map, board.aimRight(), state);
             }
         }
         return this;
@@ -105,7 +107,7 @@ public class MissionWorld extends World {
         if (state == yourMove) {
             Posn arrayPos = pixeltoArrayPos(mouse);
             if (board.inBoard(arrayPos)) {
-                return new MissionWorld(map, board.move(arrayPos), state, enemy);
+                return new MissionWorld(map, board.move(arrayPos), state);
             } else return this;
         } else return this;
     }
@@ -114,7 +116,7 @@ public class MissionWorld extends World {
         int newTurn;
         if (state == yourAttack || state == yourMove) newTurn = enemyTurn;
         else newTurn = yourMove;
-        return new MissionWorld(map, board.end(), newTurn, new Enemy(this));
+        return new MissionWorld(map, board.end(), newTurn);
     }
 
     public World completeMission() {

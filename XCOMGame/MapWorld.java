@@ -1,5 +1,6 @@
 package XCOMGame;
 
+import javalib.colors.White;
 import javalib.funworld.World;
 import javalib.worldimages.*;
 
@@ -11,13 +12,14 @@ public class MapWorld extends World {
     private static final Double timeRoC = 3.0;
 
     public static final int transitionLength = 15;
-    public static final int missionRate = 20;
+    public static final int missionRate = 60;
     public static final int missionDuration = 20;
     public static final int screenHeight = 720;
     public static final int screenWidth = 1280;
     public static final WorldImage image =
             ImageFactory.fromFileImage(new Posn(960, 540), "images\\map.png");
     public static final Posn datePosn = new Posn(640, 680);
+    public static final Posn woundedPosn = new Posn(220, 680);
     public static final Posn NAPos = new Posn(280, 310);
     public static final Posn SAPos = new Posn(430, 550);
     public static final Posn EUPos = new Posn(690, 250);
@@ -30,7 +32,7 @@ public class MapWorld extends World {
     public static final int tickerEID = 2;
     public static final int panicRate = 2;
     public static final int startUnits = 8;
-    public static final int woundedMultiplier = 10;
+    public static final int woundedMultiplier = 15;
 
     DateContainer date;
     Continent[] continents;
@@ -73,7 +75,11 @@ public class MapWorld extends World {
     public WorldImage makeImage() {
         WorldImage image = this.image;
         image = ImageFactory.overlayImages(image, date.getImage());
-        //image = ImageFactory.overlayImages(image, ticker.getImage());
+        if (wounded > 0) {
+            WorldImage recovery = ImageFactory.textImage(woundedPosn, "Days until squad is ready: " +
+                    (wounded * timeRoC.intValue()), 20, 1, new White());
+            image = ImageFactory.overlayImages(image, recovery);
+        }
         for (int i = 0; i < continents.length; i++) {
             image = ImageFactory.overlayImages(image, continents[i].getImage());
         }
