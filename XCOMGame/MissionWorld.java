@@ -52,7 +52,7 @@ public class MissionWorld extends World {
             WorldImage chance = ImageFactory.textImage(chancePos, board.chanceToHit() + "%", 30, 0, new Color(0,0,255));
             return ImageFactory.overlayImages(board.getImage(), chance);
         } else if (state == enemyTurn) {
-            WorldImage chance = ImageFactory.textImage(chancePos, "Enemy Turn", 30, 0, new Color(0,0,0));
+            WorldImage chance = ImageFactory.textImage(chancePos, "Enemy Turn", 30, 0, new Color(0,0,255));
             return ImageFactory.overlayImages(board.getImage(), chance);
         }
         return board.getImage();
